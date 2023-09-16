@@ -175,14 +175,29 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
     integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
   </script>
-  <script>
-  function fetchMetallicaData() {
-    fetch('https://striveschool-api.herokuapp.com/api/deezer/search?q=metallica')
+<script>
+  function fetchData() {
+    const searchField = document.getElementById('searchField');
+    const query = searchField.value.trim().toLowerCase(); // Ottieni il valore del campo di ricerca e rimuovi gli spazi bianchi extra
+
+    if (query.length === 0) {
+      console.error('Please enter a search query.');
+      return;
+    }
+
+    const sections = {
+      'metallica': 'metallicaSection',
+      'eminem': 'eminemSection',
+      'queen': 'queenSection',
+    };
+
+    const sectionId = sections[query] || 'searchSection';
+    const section = document.getElementById(sectionId);
+    section.innerHTML = ''; // Pulisci la sezione prima di aggiungere nuovi dati
+
+    fetch(`https://striveschool-api.herokuapp.com/api/deezer/search?q=${encodeURIComponent(query)}`)
       .then(response => response.json())
       .then(data => {
-        const metallicaSection = document.getElementById('metallicaSection');
-        metallicaSection.innerHTML = ''; // Pulisci la sezione prima di aggiungere nuovi dati
-
         data.data.forEach(item => {
           const div = document.createElement('div');
           div.classList.add('col'); // Aggiungi le classi necessarie per il tuo layout
@@ -196,10 +211,10 @@
 
           div.appendChild(img);
           div.appendChild(p);
-          metallicaSection.appendChild(div);
+          section.appendChild(div);
         });
 
-        document.getElementById('metallica').classList.remove('d-none'); // Mostra la sezione
+        document.getElementById(query).classList.remove('d-none'); // Mostra la sezione
       })
       .catch(error => {
         console.error('Error fetching the data', error);
@@ -207,16 +222,10 @@
   }
 
   function handleSearch() {
-    const searchField = document.getElementById('searchField');
-    if (searchField.value.toLowerCase() === 'metallica') {
-      fetchMetallicaData();
-    }
+    fetchData();
   }
 </script>
 
-</script>
-
-  </script>
 </body>
 
 </html>
