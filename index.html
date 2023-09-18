@@ -19,6 +19,7 @@
 <body>
   <div class="container-fluid">
     <div class="row">
+
       <!--SIDEBAR VERTICAL-->
       <div class="col-2">
         <nav class="navbar navbar-expand-md navbar-white bg-navbar fixed-left justify-content-between" id="sidebar">
@@ -54,6 +55,13 @@
                     </div>
                   </li>
                 </ul>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#albumListModal" onclick="createAlbumList()">
+            Crea lista
+          </button>
+                   </div>
               </div>
             </div>
           </div>
@@ -224,7 +232,34 @@
   function handleSearch() {
     fetchData();
   }
+
+  function createAlbumList() {
+  const albumList = document.getElementById('albumList');
+  albumList.innerHTML = ''; // Pulisci la lista prima di aggiungere nuovi titoli
+
+  const titles = document.querySelectorAll('p');
+  titles.forEach(title => {
+    const listItem = document.createElement('li');
+    listItem.textContent = title.textContent;
+    albumList.appendChild(listItem);
+  });
+}
+
 </script>
+<div class="modal fade" id="albumListModal" tabindex="-1" role="dialog" aria-labelledby="albumListModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="albumListModalLabel">Lista degli Album</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul id="albumList"></ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
 
 </body>
 
